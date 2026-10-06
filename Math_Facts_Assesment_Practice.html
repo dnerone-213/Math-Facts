@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Struthers Math Facts</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+        color: #111;
+    }
+
+    .header {
+        background: #c8102e;
+        color: white;
+        text-align: center;
+        padding: 22px 15px;
+        border-bottom: 8px solid #111;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 38px;
+        font-weight: 800;
+    }
+
+    .header p {
+        margin: 6px 0 0;
+        font-size: 17px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 28px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+        margin-top: 0;
+        color: #c8102e;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 7px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ccc;
+        border-radius: 7px;
+        font-size: 17px;
+        margin-bottom: 18px;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #c8102e;
+        outline: none;
+    }
+
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .operation-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .operation-option {
+        background: #f4f4f4;
+        border: 2px solid #ccc;
+        padding: 12px;
+        border-radius: 7px;
+        cursor: pointer;
+    }
+
+    .operation-option:hover {
+        border-color: #c8102e;
+    }
+
+    .operation-option input {
+        margin-right: 8px;
+    }
+
+    .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0 20px;
+        font-weight: bold;
+    }
+
+    .checkbox-row input {
+        width: 20px;
+        height: 20px;
+    }
+
+    button {
+        border: none;
+        border-radius: 8px;
+        padding: 14px 22px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        background: #c8102e;
+        color: white;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #9d0c23;
+        transform: translateY(-1px);
+    }
+
+    .secondary-button {
+        background: #111;
+    }
+
+    .secondary-button:hover {
+        background: #333;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .question-number {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #666;
+    }
+
+    /* =========================================
+       DECREASING TIMER BAR
+       ========================================= */
+
+    .timer-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 18px auto 25px auto;
+    }
+
+    .timer-label {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .timer-bar-background {
+        width: 100%;
+        height: 18px;
+        background: #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+    }
+
+    .timer-bar {
+        height: 100%;
+        width: 100%;
+        background: #c8102e;
+        border-radius: 10px;
+        transition: width 1s linear;
+    }
+
+    .problem {
+        text-align: center;
+        font-size: 58px;
+        font-weight: bold;
+        margin: 30px 0;
+    }
+
+    .answer-input {
+        max-width: 350px;
+        margin: 0 auto 20px;
+        display: block;
+        text-align: center;
+        font-size: 28px !important;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .results-summary {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 25px 0;
+    }
+
+    .stat {
+        background: #f4f4f4;
+        border-radius: 8px;
+        padding: 18px;
+        text-align: center;
+        border-top: 5px solid #c8102e;
+    }
+
+    .stat-number {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .stat-label {
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    th {
+        background: #111;
+        color: white;
+    }
+
+    tr.correct {
+        background: #e9f8e9;
+    }
+
+    tr.incorrect {
+        background: #fdeaea;
+    }
+
+    .student-display {
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .instructions {
+        background: #fff3f3;
+        border-left: 5px solid #c8102e;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    .mode-choice {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin: 20px 0 25px;
+    }
+
+    .mode-card {
+        background: #f8f8f8;
+        border: 3px solid #ccc;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .mode-card:hover {
+        border-color: #c8102e;
+        background: #fff5f5;
+    }
+
+    .mode-icon {
+        font-size: 42px;
+        margin-bottom: 8px;
+    }
+
+    .practice-settings {
+        background: #f6f6f6;
+        border-radius: 10px;
+        padding: 18px;
+        margin: 18px 0;
+    }
+
+    .flashcard {
+        max-width: 650px;
+        min-height: 310px;
+        margin: 25px auto;
+        background: white;
+        border: 4px solid #111;
+        border-radius: 18px;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .flashcard-label {
+        color: #666;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
+
+    .flashcard-problem {
+        font-size: 64px;
+        font-weight: 800;
+        margin: 10px 0 20px;
+    }
+
+    .flashcard-answer-input {
+            width: 220px;
+            padding: 12px;
+            font-size: 30px;
+            text-align: center;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            margin: 8px auto;
+        }
+        .flashcard-answer-input:focus {
+            border-color: #c8102e;
+            outline: none;
+        }
+.flashcard-answer {
+        font-size: 38px;
+        font-weight: 800;
+        color: #c8102e;
+        min-height: 48px;
+    }
+
+    .practice-feedback {
+        font-size: 21px;
+        font-weight: bold;
+        min-height: 30px;
+        margin: 10px 0;
+    }
+
+    .practice-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .practice-stat {
+        background: #f4f4f4;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .practice-stat strong {
+        display: block;
+        font-size: 25px;
+    }
+
+    .practice-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+    .know-button { background: #176b2c; }
+    .know-button:hover { background: #0f5421; }
+    .miss-button { background: #8b1e1e; }
+    .miss-button:hover { background: #6f1818; }
+
+    @media (max-width: 700px) {
+
+        .mode-choice { grid-template-columns: 1fr; }
+        .practice-stats { grid-template-columns: 1fr 1fr; }
+        .flashcard-problem { font-size: 46px; }
+
+        .settings-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .results-summary {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .problem {
+            font-size: 42px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Math Facts</h1>
+    <p>Struthers City School</p>
+</div>
+
+<div class="container">
+
+    <!-- =========================================
+         SETUP SCREEN
+         ========================================= -->
+
+    <div id="setupScreen" class="card">
+
+        <h2 id="setupTitle">Math Facts</h2>
+
+        <div id="modeChooser">
+        <h3>Choose a Mode</h3>
+
+        <div class="mode-choice">
+            <div class="mode-card" onclick="showAssessmentSetup()">
+                <div class="mode-icon">📝</div>
+                <strong>Assessment Mode</strong>
+                <div>Timed assessment with downloadable results</div>
+            </div>
+            <div class="mode-card" onclick="openPracticeMode()">
+                <div class="mode-icon">🃏</div>
+                <strong>Flash Card Practice</strong>
+                <div>Practice individual number facts at your own pace</div>
+            </div>
+        </div>
+        </div>
+
+        <div id="assessmentSetupFields" class="hidden">
+
+        <label for="studentName">Student Name</label>
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter your first and last name"
+            autocomplete="off"
+        >
+
+        <label for="teacherLastName">Teacher Last Name</label>
+
+        <input
+            type="text"
+            id="teacherLastName"
+            placeholder="Enter teacher last name"
+            autocomplete="off"
+        >
+
+        <label for="classPeriod">Class Period</label>
+
+        <input
+            type="text"
+            id="classPeriod"
+            placeholder="Enter class period"
+            autocomplete="off"
+        >
+
+        <div class="settings-grid">
+
+            <div>
+
+                <label for="questionCount">
+                    Number of Questions
+                </label>
+
+                <input
+                    type="number"
+                    id="questionCount"
+                    value="30"
+                    min="1"
+                    max="200"
+                >
+
+            </div>
+
+            <div>
+
+                <label for="secondsPerQuestion">
+                    Seconds Per Question
+                </label>
+
+                <input
+                    type="number"
+                    id="secondsPerQuestion"
+                    value="4"
+                    min="1"
+                    max="60"
+                >
+
+            </div>
+
+        </div>
+
+        <h3>Operations</h3>
+
+        <div class="operation-box">
+
+            <label class="operation-option">
+
+                <input
+                    type="checkbox"
+                    id="addition"
+                    checked
+                >
+
+                Addition (+)
+
+            </label>
+
+            <label class="operation-option">
+
+                <input
+                    type="checkbox"
+                    id="subtraction"
+                    checked
+                >
+
+                Subtraction (-)
+
+            </label>
+
+            <label class="operation-option">
+
+                <input
+                    type="checkbox"
+                    id="multiplication"
+                    checked
+                >
+
+                Multiplication (×)
+
+            </label>
+
+            <label class="operation-option">
+
+                <input
+                    type="checkbox"
+                    id="division"
+                    checked
+                >
+
+                Division (÷)
+
+            </label>
+
+        </div>
+
+        <h3>Number Range</h3>
+
+        <div class="settings-grid">
+
+            <div>
+
+                <label for="minNumber">
+                    Beginning Number
+                </label>
+
+                <input
+                    type="number"
+                    id="minNumber"
+                    value="-12"
+                >
+
+            </div>
+
+            <div>
+
+                <label for="maxNumber">
+                    Ending Number
+                </label>
+
+                <input
+                    type="number"
+                    id="maxNumber"
+                    value="12"
+                >
+
+            </div>
+
+        </div>
+
+        <h3>Answer Type</h3>
+
+        <label for="answerType">
+            What types of answers should be included?
+        </label>
+
+        <select id="answerType">
+
+            <option value="positive">
+                Positive Answers Only
+            </option>
+
+            <option value="negative">
+                Negative Answers Only
+            </option>
+
+            <option value="both" selected>
+                Positive & Negative Answers
+            </option>
+
+        </select>
+
+        <label class="checkbox-row">
+
+            <input
+                type="checkbox"
+                id="allowZero"
+                checked
+            >
+
+            Allow Zero Answers
+
+        </label>
+
+        </div>
+
+        <div class="center actions-row">
+            <button onclick="startQuiz()">Start Assessment</button>
+            <button class="secondary-button" onclick="backToModeChooser()">Back to Mode Selection</button>
+        </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         FLASH CARD PRACTICE SETUP
+         ========================================= -->
+
+    <div id="practiceSetupScreen" class="card hidden">
+        <h2>🃏 Flash Card Practice</h2>
+        <div class="instructions">
+            Practice math facts one card at a time. There is no timer, and your practice does not change your formal assessment results.
+        </div>
+
+        <label for="practiceStudentName">Student Name</label>
+        <input type="text" id="practiceStudentName" placeholder="Enter your first and last name" autocomplete="off">
+
+        <div class="practice-settings">
+            <h3>What do you want to practice?</h3>
+            <label for="practiceOperation">Operation</label>
+            <select id="practiceOperation" onchange="updatePracticeTargetOptions()">
+                <option value="+">Addition (+)</option>
+                <option value="-">Subtraction (−)</option>
+                <option value="*">Multiplication (×)</option>
+                <option value="/">Division (÷)</option>
+                <option value="mixed">Mixed Facts</option>
+            </select>
+
+            <div id="practiceTargetArea">
+                <label for="practiceTarget">Practice Number</label>
+                <select id="practiceTarget">
+                    <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                    <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7" selected>7</option>
+                    <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                <p id="practiceTargetHelp" style="color:#666;margin-top:-8px;">Example: ×7 gives you the 7 multiplication facts.</p>
+            </div>
+
+            <h3>Answer Type</h3>
+            <label for="practiceAnswerType">What types of answers should be included?</label>
+            <select id="practiceAnswerType">
+                <option value="positive">Positive Answers Only</option>
+                <option value="negative">Negative Answers Only</option>
+                <option value="both" selected>Positive &amp; Negative Answers</option>
+            </select>
+
+            <label class="checkbox-row">
+                <input type="checkbox" id="practiceAllowZero" checked>
+                Allow Zero Answers
+            </label>
+
+            <label for="practiceDeckSize">Cards in Practice Session</label>
+            <select id="practiceDeckSize">
+                <option value="10">10 cards</option>
+                <option value="20" selected>20 cards</option>
+                <option value="30">30 cards</option>
+                <option value="all">All available cards</option>
+            </select>
+
+            <label class="checkbox-row">
+                <input type="checkbox" id="repeatMissed" checked>
+                Repeat facts I miss
+            </label>
+        </div>
+
+        <div class="center">
+            <button onclick="startFlashCardPractice()">Start Flash Cards</button>
+            <button class="secondary-button" onclick="backToAssessmentSetup()">Back to Assessment</button>
+        </div>
+    </div>
+
+    <!-- =========================================
+         FLASH CARD PRACTICE
+         ========================================= -->
+
+    <div id="practiceScreen" class="card hidden">
+        <div class="student-display">Student: <span id="practiceStudentDisplay"></span></div>
+        <div class="question-number">Card <span id="practiceCardNumber">1</span> of <span id="practiceTotalCards">20</span></div>
+
+        <div class="practice-stats">
+            <div class="practice-stat"><strong id="practiceCorrect">0</strong>Correct</div>
+            <div class="practice-stat"><strong id="practiceMissed">0</strong>Need Practice</div>
+            <div class="practice-stat"><strong id="practiceAccuracy">0%</strong>Accuracy</div>
+            <div class="practice-stat"><strong id="practiceRemaining">20</strong>Remaining</div>
+        </div>
+
+        <div class="flashcard">
+            <div class="flashcard-label">Flash Card</div>
+            <div class="flashcard-problem" id="flashcardProblem">7 × 8</div>
+            <input type="number" id="flashcardStudentAnswer" class="flashcard-answer-input" inputmode="numeric" autocomplete="off" placeholder="Type your answer">
+            <div class="flashcard-answer" id="flashcardAnswer"></div>
+            <div class="practice-feedback" id="practiceFeedback"></div>
+        </div>
+
+        <div class="center">
+            <button id="checkAnswerButton" onclick="checkFlashCardAnswer()">Check Answer</button>
+        </div>
+
+        <div class="practice-actions hidden" id="practiceNextButtons">
+            <button class="know-button" id="nextPracticeButton" onclick="nextFlashCard()">Next Card</button>
+        </div>
+
+        <div class="center" style="margin-top:20px;">
+            <button class="secondary-button" onclick="endFlashCardPractice()">End Practice</button>
+        </div>
+    </div>
+
+    <!-- =========================================
+         FLASH CARD SUMMARY
+         ========================================= -->
+
+    <div id="practiceResultsScreen" class="card hidden">
+        <h2>Flash Card Practice Complete</h2>
+        <div class="results-summary">
+            <div class="stat"><div class="stat-number" id="practiceSummaryCards">0</div><div class="stat-label">Cards</div></div>
+            <div class="stat"><div class="stat-number" id="practiceSummaryCorrect">0</div><div class="stat-label">I Know It</div></div>
+            <div class="stat"><div class="stat-number" id="practiceSummaryMissed">0</div><div class="stat-label">Need Practice</div></div>
+            <div class="stat"><div class="stat-number" id="practiceSummaryAccuracy">0%</div><div class="stat-label">Accuracy</div></div>
+        </div>
+        <div id="practiceMissedList" class="instructions"></div>
+        <div class="center">
+            <button onclick="openPracticeMode()">Practice Again</button>
+            <button class="secondary-button" onclick="backToAssessmentSetup()">Back to Assessment</button>
+        </div>
+    </div>
+
+    <!-- =========================================
+         QUIZ SCREEN
+         ========================================= -->
+
+    <div id="quizScreen" class="card hidden">
+
+        <div class="student-display">
+
+            Student:
+            <span id="quizStudentName"></span>
+
+        </div>
+
+        <div class="question-number">
+
+            Question
+            <span id="currentQuestionNumber">1</span>
+
+            of
+
+            <span id="totalQuestionNumber">30</span>
+
+        </div>
+
+
+        <!-- DECREASING TIMER BAR -->
+
+        <div class="timer-container">
+
+            <div class="timer-label">
+
+                Time Remaining:
+                <span id="timerDisplay">5</span>
+
+            </div>
+
+            <div class="timer-bar-background">
+
+                <div
+                    id="timerBar"
+                    class="timer-bar"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="problem"
+            id="problemDisplay"
+        >
+            5 + 3
+        </div>
+
+
+        <input
+            type="number"
+            id="answerInput"
+            class="answer-input"
+            placeholder="Answer"
+            autocomplete="off"
+        >
+
+
+        <div class="center">
+
+            <button onclick="submitAnswer()">
+                Submit Answer
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         RESULTS SCREEN
+         ========================================= -->
+
+    <div id="resultsScreen" class="card hidden">
+
+        <h2>Assessment Results</h2>
+
+        <p style="color:#666;">
+            Download a complete report containing the student's
+            settings, overall score, operation breakdown,
+            and question-by-question results.
+        </p>
+
+
+        <div class="results-summary">
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="scoreDisplay"
+                >
+                    0%
+                </div>
+
+                <div class="stat-label">
+                    Score
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="correctDisplay"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Correct
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="incorrectDisplay"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Incorrect
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="totalDisplay"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Total
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <h3>Student</h3>
+
+        <p id="resultStudentName"></p>
+
+
+        <h3>Operation Breakdown</h3>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Operation
+                        </th>
+
+                        <th>
+                            Questions
+                        </th>
+
+                        <th>
+                            Correct
+                        </th>
+
+                        <th>
+                            Incorrect
+                        </th>
+
+                        <th>
+                            Accuracy
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="operationBreakdown">
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <h3>Question Details</h3>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Attempted Problem
+                        </th>
+
+                        <th>
+                            Correct Answer
+                        </th>
+
+                        <th>
+                            Student Answer
+                        </th>
+
+                        <th>
+                            Result
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="resultsTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <br>
+
+
+        <div class="center">
+
+            <button onclick="downloadCSV()">
+                Download Results
+            </button>
+
+            <button
+                class="secondary-button"
+                onclick="restartQuiz()"
+            >
+                Start New Assessment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   GLOBAL VARIABLES
+   ========================================= */
+
+let questions = [];
+
+// Questions already used in this assessment.
+let usedQuestionKeys = new Set();
+
+let currentQuestionIndex = 0;
+
+let results = [];
+
+let studentName = "";
+let teacherLastName = "";
+let classPeriod = "";
+
+let timerInterval = null;
+
+let timeRemaining = 0;
+
+// Flash Card Practice state
+let practiceDeck = [];
+let practiceIndex = 0;
+let practiceCorrectCount = 0;
+let practiceMissedCount = 0;
+let practiceAnsweredCount = 0;
+let practiceAnswerChecked = false;
+let practiceMissedFacts = [];
+let practiceStudentName = "";
+
+
+
+/* =========================================
+   GET SELECTED OPERATIONS
+   ========================================= */
+
+function getSelectedOperations() {
+
+    const operations = [];
+
+    if (
+        document.getElementById("addition").checked
+    ) {
+        operations.push("+");
+    }
+
+    if (
+        document.getElementById("subtraction").checked
+    ) {
+        operations.push("-");
+    }
+
+    if (
+        document.getElementById("multiplication").checked
+    ) {
+        operations.push("*");
+    }
+
+    if (
+        document.getElementById("division").checked
+    ) {
+        operations.push("/");
+    }
+
+    return operations;
+}
+
+
+/* =========================================
+   RANDOM INTEGER
+   ========================================= */
+
+function randomInteger(min, max) {
+
+    return Math.floor(
+        Math.random() * (max - min + 1)
+    ) + min;
+
+}
+
+
+/* =========================================
+   GENERATE QUESTION
+   ========================================= */
+
+function generateQuestion() {
+
+    const min =
+        parseInt(
+            document.getElementById("minNumber").value
+        );
+
+    const max =
+        parseInt(
+            document.getElementById("maxNumber").value
+        );
+
+    const operations =
+        getSelectedOperations();
+
+    const answerType =
+        document.getElementById("answerType").value;
+
+    const allowZero =
+        document.getElementById("allowZero").checked;
+
+
+    let attempts = 0;
+
+
+    while (attempts < 1000) {
+
+        attempts++;
+
+
+        const operation =
+            operations[
+                Math.floor(
+                    Math.random() *
+                    operations.length
+                )
+            ];
+
+
+        let a;
+        let b;
+        let answer;
+        let problemText;
+
+
+        /* ================================
+           ADDITION
+           ================================ */
+
+        if (operation === "+") {
+
+            a = randomInteger(min, max);
+
+            b = randomInteger(min, max);
+
+            answer = a + b;
+
+            problemText =
+                `${a} + ${b}`;
+
+        }
+
+
+        /* ================================
+           SUBTRACTION
+           ================================ */
+
+        else if (operation === "-") {
+
+            a = randomInteger(min, max);
+
+            b = randomInteger(min, max);
+
+            answer = a - b;
+
+            problemText =
+                `${a} - ${b}`;
+
+        }
+
+
+        /* ================================
+           MULTIPLICATION
+           ================================ */
+
+        else if (operation === "*") {
+
+            a = randomInteger(min, max);
+
+            b = randomInteger(min, max);
+
+            answer = a * b;
+
+            problemText =
+                `${a} × ${b}`;
+
+        }
+
+
+        /* ================================
+           DIVISION
+           ================================ */
+
+        else if (operation === "/") {
+
+            /*
+                We create the divisor first and then
+                create an integer quotient so that
+                every division problem has a whole-number
+                answer.
+            */
+
+            b = randomInteger(min, max);
+
+
+            if (b === 0) {
+                continue;
+            }
+
+
+            let possibleQuotients = [];
+
+
+            for (
+                let q = min;
+                q <= max;
+                q++
+            ) {
+
+                const numerator =
+                    b * q;
+
+
+                if (
+                    numerator >= min &&
+                    numerator <= max
+                ) {
+
+                    possibleQuotients.push(q);
+
+                }
+
+            }
+
+
+            if (
+                possibleQuotients.length === 0
+            ) {
+                continue;
+            }
+
+
+            const q =
+                possibleQuotients[
+                    Math.floor(
+                        Math.random() *
+                        possibleQuotients.length
+                    )
+                ];
+
+
+            a = b * q;
+
+            answer = q;
+
+            problemText =
+                `${a} ÷ ${b}`;
+
+        }
+
+
+        /* =================================
+           ANSWER TYPE FILTER
+           ================================= */
+
+        if (
+            !allowZero &&
+            answer === 0
+        ) {
+            continue;
+        }
+
+
+        if (
+            answerType === "positive" &&
+            answer <= 0
+        ) {
+            continue;
+        }
+
+
+        if (
+            answerType === "negative" &&
+            answer >= 0
+        ) {
+            continue;
+        }
+
+
+        /* =================================
+           PREVENT DUPLICATE QUESTIONS
+           ================================= */
+
+        const questionKey =
+            `${operation}|${a}|${b}`;
+
+        if (usedQuestionKeys.has(questionKey)) {
+            continue;
+        }
+
+        usedQuestionKeys.add(questionKey);
+
+
+        return {
+
+            problemText:
+                problemText,
+
+            answer:
+                answer,
+
+            operation:
+                operation
+
+        };
+
+    }
+
+
+    /*
+        Fallback if the selected settings make it
+        difficult to generate a valid question.
+    */
+
+    // No valid unused question could be generated.
+    return null;
+
+}
+
+
+/* =========================================
+   FLASH CARD PRACTICE
+   ========================================= */
+
+function hideAllMainScreens() {
+    ["setupScreen", "practiceSetupScreen", "practiceScreen", "practiceResultsScreen", "quizScreen", "resultsScreen"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+    });
+}
+
+function showAssessmentSetup() {
+    hideAllMainScreens();
+    document.getElementById("setupScreen").classList.remove("hidden");
+    document.getElementById("modeChooser").classList.add("hidden");
+    document.getElementById("setupTitle").textContent = "📝 Assessment Mode";
+    document.getElementById("assessmentSetupFields").classList.remove("hidden");
+    document.getElementById("studentName").focus();
+}
+
+function backToModeChooser() {
+    clearInterval(timerInterval);
+    document.getElementById("assessmentSetupFields").classList.add("hidden");
+    document.getElementById("modeChooser").classList.remove("hidden");
+    document.getElementById("setupTitle").textContent = "Math Facts";
+}
+
+function openPracticeMode() {
+    hideAllMainScreens();
+    document.getElementById("practiceSetupScreen").classList.remove("hidden");
+    const assessmentName = document.getElementById("studentName").value.trim();
+    if (assessmentName && !document.getElementById("practiceStudentName").value.trim()) {
+        document.getElementById("practiceStudentName").value = assessmentName;
+    }
+    updatePracticeTargetOptions();
+    document.getElementById("practiceStudentName").focus();
+}
+
+function backToAssessmentSetup() {
+    clearInterval(timerInterval);
+    hideAllMainScreens();
+    document.getElementById("setupScreen").classList.remove("hidden");
+    backToModeChooser();
+}
+
+function updatePracticeTargetOptions() {
+    const operation = document.getElementById("practiceOperation").value;
+    const area = document.getElementById("practiceTargetArea");
+    if (operation === "mixed") {
+        area.classList.add("hidden");
+        return;
+    }
+    area.classList.remove("hidden");
+    const help = document.getElementById("practiceTargetHelp");
+    const symbol = {"+":"+", "-":"−", "*":"×", "/":"÷"}[operation];
+    const text = operation === "/"
+        ? `Example: ÷7 gives you division facts with 7 as the divisor.`
+        : `Example: ${symbol}7 gives you the 7 ${operation === "*" ? "multiplication" : operation === "+" ? "addition" : "subtraction"} facts.`;
+    help.textContent = text;
+}
+
+function shuffleArray(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+function buildPracticeDeck() {
+    const operation = document.getElementById("practiceOperation").value;
+    const target = parseInt(document.getElementById("practiceTarget").value, 10);
+    const cards = [];
+
+    if (operation === "mixed") {
+        const ops = ["+", "-", "*"];
+        for (const op of ops) {
+            for (let n = 0; n <= 12; n++) {
+                cards.push(makePracticeCard(op, n, target));
+            }
+        }
+        // Mixed division facts use every divisor from 1–12.
+        for (let divisor = 1; divisor <= 12; divisor++) {
+            for (let n = 0; n <= 12; n++) {
+                cards.push({a: n * divisor, b: divisor, operation: "/", answer: n});
+            }
+        }
+    } else {
+        for (let n = 0; n <= 12; n++) {
+            if (operation === "/") {
+                // Classic division family: 0÷target through 12×target÷target.
+                if (target === 0) continue;
+                cards.push({a: n * target, b: target, operation: "/", answer: n});
+            } else {
+                cards.push(makePracticeCard(operation, target, n));
+            }
+        }
+    }
+
+    return cards.filter(card => card && Number.isFinite(card.answer));
+}
+
+function targetSafeDivisor() {
+    const target = parseInt(document.getElementById("practiceTarget").value, 10);
+    return target === 0 ? 1 : target;
+}
+
+function makePracticeCard(operation, first, second) {
+    let answer;
+    if (operation === "+") answer = first + second;
+    if (operation === "-") answer = first - second;
+    if (operation === "*") answer = first * second;
+    if (operation === "/") {
+        if (second === 0 || first % second !== 0) return null;
+        answer = first / second;
+    }
+    return {a: first, b: second, operation, answer};
+}
+
+function formatPracticeCard(card) {
+    const symbols = {"+":"+", "-":"−", "*":"×", "/":"÷"};
+    return `${card.a} ${symbols[card.operation]} ${card.b}`;
+}
+
+function startFlashCardPractice() {
+    if (document.getElementById("practiceOperation").value === "/" && document.getElementById("practiceTarget").value === "0") {
+        document.getElementById("practiceTarget").value = "1";
+    }
+    practiceStudentName = document.getElementById("practiceStudentName").value.trim();
+    if (!practiceStudentName) {
+        alert("Please enter the student's name.");
+        document.getElementById("practiceStudentName").focus();
+        return;
+    }
+
+    let deck = buildPracticeDeck();
+
+    const practiceAnswerType = document.getElementById("practiceAnswerType").value;
+    const practiceAllowZero = document.getElementById("practiceAllowZero").checked;
+
+    deck = deck.filter(card => {
+        const answer = Number(card.answer);
+        if (!practiceAllowZero && answer === 0) return false;
+        if (practiceAnswerType === "positive" && answer <= 0) return false;
+        if (practiceAnswerType === "negative" && answer >= 0) return false;
+        return true;
+    });
+
+    deck = shuffleArray(deck);
+    const size = document.getElementById("practiceDeckSize").value;
+    if (size !== "all") deck = deck.slice(0, parseInt(size, 10));
+
+    if (!deck.length) {
+        alert("No practice cards are available for those settings.");
+        return;
+    }
+
+    practiceDeck = deck;
+    practiceIndex = 0;
+    practiceCorrectCount = 0;
+    practiceMissedCount = 0;
+    practiceAnsweredCount = 0;
+    practiceMissedFacts = [];
+    practiceAnswerChecked = false;
+
+    hideAllMainScreens();
+    document.getElementById("practiceScreen").classList.remove("hidden");
+    document.getElementById("practiceStudentDisplay").textContent = practiceStudentName;
+    document.getElementById("practiceTotalCards").textContent = practiceDeck.length;
+    showPracticeCard();
+}
+
+function showPracticeCard() {
+    if (practiceIndex >= practiceDeck.length) {
+        finishFlashCardPractice();
+        return;
+    }
+    const card = practiceDeck[practiceIndex];
+    practiceAnswerChecked = false;
+    document.getElementById("practiceCardNumber").textContent = practiceIndex + 1;
+    document.getElementById("flashcardProblem").textContent = formatPracticeCard(card);
+    document.getElementById("flashcardStudentAnswer").value = "";
+    document.getElementById("flashcardStudentAnswer").disabled = false;
+    document.getElementById("flashcardAnswer").textContent = "";
+    document.getElementById("practiceFeedback").textContent = "";
+    document.getElementById("checkAnswerButton").classList.remove("hidden");
+    document.getElementById("practiceNextButtons").classList.add("hidden");
+    updatePracticeStats();
+    setTimeout(() => document.getElementById("flashcardStudentAnswer").focus(), 50);
+}
+
+function checkFlashCardAnswer() {
+    if (practiceAnswerChecked) return;
+    const input = document.getElementById("flashcardStudentAnswer");
+    const value = input.value.trim();
+    if (value === "") {
+        document.getElementById("practiceFeedback").textContent = "Type an answer first.";
+        input.focus();
+        return;
+    }
+
+    const card = practiceDeck[practiceIndex];
+    const studentAnswer = Number(value);
+    const correct = studentAnswer === Number(card.answer);
+    practiceAnswerChecked = true;
+    practiceAnsweredCount++;
+    input.disabled = true;
+    document.getElementById("checkAnswerButton").classList.add("hidden");
+
+    if (correct) {
+        practiceCorrectCount++;
+        document.getElementById("practiceFeedback").textContent = "✓ Correct! Great job!";
+        document.getElementById("flashcardAnswer").textContent = "Correct!";
+    } else {
+        practiceMissedCount++;
+        practiceMissedFacts.push({...card, studentAnswer});
+        document.getElementById("practiceFeedback").textContent = `Not quite. The correct answer is ${card.answer}.`;
+        document.getElementById("flashcardAnswer").textContent = `Answer: ${card.answer}`;
+        if (document.getElementById("repeatMissed").checked) {
+            const insertAt = Math.min(practiceDeck.length, practiceIndex + 3);
+            practiceDeck.splice(insertAt, 0, {...card});
+        }
+    }
+
+    document.getElementById("practiceNextButtons").classList.remove("hidden");
+    updatePracticeStats();
+}
+
+function nextFlashCard() {
+    if (!practiceAnswerChecked) return;
+    practiceIndex++;
+    showPracticeCard();
+}
+
+document.addEventListener("keydown", function(e) {
+    const practiceScreen = document.getElementById("practiceScreen");
+    if (!practiceScreen || practiceScreen.classList.contains("hidden")) return;
+    if (e.key === "Enter") {
+        e.preventDefault();
+        if (!practiceAnswerChecked) {
+            checkFlashCardAnswer();
+        } else {
+            nextFlashCard();
+        }
+    }
+});
+
+function updatePracticeStats() {
+    const totalAnswered = practiceAnsweredCount;
+    const accuracy = totalAnswered ? Math.round((practiceCorrectCount / totalAnswered) * 100) : 0;
+    document.getElementById("practiceCorrect").textContent = practiceCorrectCount;
+    document.getElementById("practiceMissed").textContent = practiceMissedCount;
+    document.getElementById("practiceAccuracy").textContent = accuracy + "%";
+    document.getElementById("practiceRemaining").textContent = Math.max(0, practiceDeck.length - practiceIndex);
+}
+
+function finishFlashCardPractice() {
+    const total = practiceAnsweredCount;
+    const accuracy = total ? Math.round((practiceCorrectCount / total) * 100) : 0;
+    document.getElementById("practiceSummaryCards").textContent = total;
+    document.getElementById("practiceSummaryCorrect").textContent = practiceCorrectCount;
+    document.getElementById("practiceSummaryMissed").textContent = practiceMissedCount;
+    document.getElementById("practiceSummaryAccuracy").textContent = accuracy + "%";
+
+    const list = document.getElementById("practiceMissedList");
+    const unique = [];
+    const seen = new Set();
+    practiceMissedFacts.forEach(card => {
+        const key = `${card.a}|${card.operation}|${card.b}`;
+        if (!seen.has(key)) { seen.add(key); unique.push(card); }
+    });
+    list.innerHTML = unique.length
+        ? `<strong>Facts to keep practicing:</strong><br>${unique.map(formatPracticeCard).join(" &nbsp; • &nbsp; ")}`
+        : "<strong>Excellent work!</strong> You did not mark any facts as needing practice.";
+
+    hideAllMainScreens();
+    document.getElementById("practiceResultsScreen").classList.remove("hidden");
+}
+
+function endFlashCardPractice() {
+    if (practiceAnsweredCount > 0 && !confirm("End this practice session now?")) return;
+    finishFlashCardPractice();
+}
+
+/* =========================================
+   START QUIZ
+   ========================================= */
+
+function startQuiz() {
+
+    studentName =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+    teacherLastName =
+        document.getElementById(
+            "teacherLastName"
+        ).value.trim();
+
+    classPeriod =
+        document.getElementById(
+            "classPeriod"
+        ).value.trim();
+
+
+    if (!studentName) {
+
+        alert(
+            "Please enter the student's name."
+        );
+
+        return;
+
+    }
+
+    if (!teacherLastName) {
+
+        alert(
+            "Please enter the teacher's last name."
+        );
+
+        document.getElementById("teacherLastName").focus();
+
+        return;
+
+    }
+
+    if (!classPeriod) {
+
+        alert(
+            "Please enter the class period."
+        );
+
+        document.getElementById("classPeriod").focus();
+
+        return;
+
+    }
+
+
+    const operations =
+        getSelectedOperations();
+
+
+    if (operations.length === 0) {
+
+        alert(
+            "Please select at least one operation."
+        );
+
+        return;
+
+    }
+
+
+    const min =
+        parseInt(
+            document.getElementById("minNumber").value
+        );
+
+    const max =
+        parseInt(
+            document.getElementById("maxNumber").value
+        );
+
+
+    if (min > max) {
+
+        alert(
+            "The beginning number must be less than or equal to the ending number."
+        );
+
+        return;
+
+    }
+
+
+    const questionCount =
+        parseInt(
+            document.getElementById("questionCount").value
+        );
+
+
+    questions = [];
+
+    results = [];
+
+    currentQuestionIndex = 0;
+
+    // Start each assessment with a fresh set of unique questions.
+    usedQuestionKeys = new Set();
+
+
+    for (
+        let i = 0;
+        i < questionCount;
+        i++
+    ) {
+
+        const question = generateQuestion();
+
+        if (!question) {
+            alert(
+                "There are not enough unique questions for the settings you selected. Please increase the number range, select more operations, or reduce the number of questions."
+            );
+
+            usedQuestionKeys = new Set();
+            return;
+        }
+
+        questions.push(question);
+
+    }
+
+
+    document.getElementById(
+        "quizStudentName"
+    ).textContent = studentName;
+
+
+    document.getElementById(
+        "totalQuestionNumber"
+    ).textContent = questionCount;
+
+
+    document.getElementById(
+        "setupScreen"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "resultsScreen"
+    ).classList.add("hidden");
+
+    document.getElementById("practiceSetupScreen").classList.add("hidden");
+    document.getElementById("practiceScreen").classList.add("hidden");
+    document.getElementById("practiceResultsScreen").classList.add("hidden");
+
+
+    document.getElementById(
+        "quizScreen"
+    ).classList.remove("hidden");
+
+
+    showQuestion();
+
+}
+
+
+/* =========================================
+   SHOW QUESTION
+   ========================================= */
+
+function showQuestion() {
+
+    if (
+        currentQuestionIndex >= questions.length
+    ) {
+
+        finishQuiz();
+
+        return;
+
+    }
+
+
+    const question =
+        questions[currentQuestionIndex];
+
+
+    document.getElementById(
+        "currentQuestionNumber"
+    ).textContent =
+        currentQuestionIndex + 1;
+
+
+    document.getElementById(
+        "problemDisplay"
+    ).textContent =
+        question.problemText;
+
+
+    const answerInput =
+        document.getElementById(
+            "answerInput"
+        );
+
+
+    answerInput.value = "";
+
+    answerInput.focus();
+
+
+    startTimer();
+
+}
+
+
+/* =========================================
+   DECREASING TIMER
+   ========================================= */
+
+function startTimer() {
+
+    // Stop any timer that may still be running.
+    clearInterval(timerInterval);
+
+    const totalTime = parseInt(
+        document.getElementById("secondsPerQuestion").value,
+        10
+    );
+
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerBar = document.getElementById("timerBar");
+
+    // Reset the timer value immediately.
+    timeRemaining = totalTime;
+    timerDisplay.textContent = timeRemaining;
+
+    // IMPORTANT: Reset the bar instantly before starting the new countdown.
+    // Remove the transition, force a browser redraw, then restore the smooth
+    // transition for the new question.
+    timerBar.style.transition = "none";
+    timerBar.style.width = "100%";
+
+    // Force the browser to apply the 100% width immediately.
+    void timerBar.offsetWidth;
+
+    // Now begin the smooth countdown.
+    timerBar.style.transition = `width ${totalTime}s linear`;
+    timerBar.style.width = "0%";
+
+    timerInterval = setInterval(() => {
+
+        timeRemaining--;
+
+        timerDisplay.textContent = Math.max(0, timeRemaining);
+
+        if (timeRemaining <= 0) {
+
+            clearInterval(timerInterval);
+
+            // Keep the bar at zero when time expires.
+            timerBar.style.transition = "none";
+            timerBar.style.width = "0%";
+
+            submitAnswer(true);
+        }
+
+    }, 1000);
+
+}
+
+/* =========================================
+   SUBMIT ANSWER
+   ========================================= */
+
+function submitAnswer(
+    timedOut = false
+) {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const question =
+        questions[
+            currentQuestionIndex
+        ];
+
+
+    const input =
+        document.getElementById(
+            "answerInput"
+        );
+
+
+    const rawAnswer =
+        input.value.trim();
+
+
+    let studentAnswer = null;
+
+
+    if (
+        rawAnswer !== ""
+    ) {
+
+        studentAnswer =
+            Number(rawAnswer);
+
+    }
+
+
+    const correct =
+        studentAnswer !== null &&
+        studentAnswer ===
+            question.answer;
+
+
+    results.push({
+
+        questionNumber:
+            currentQuestionIndex + 1,
+
+        attemptedProblem:
+            question.problemText,
+
+        correctAnswer:
+            question.answer,
+
+        studentAnswer:
+            studentAnswer,
+
+        correct:
+            correct,
+
+        operation:
+            question.operation,
+
+        timedOut:
+            timedOut
+
+    });
+
+
+    currentQuestionIndex++;
+
+
+    showQuestion();
+
+}
+
+
+/* =========================================
+   FINISH QUIZ
+   ========================================= */
+
+function finishQuiz() {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        "quizScreen"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "resultsScreen"
+    ).classList.remove("hidden");
+
+
+    displayResults();
+
+}
+
+
+/* =========================================
+   DISPLAY RESULTS
+   ========================================= */
+
+function displayResults() {
+
+    const total =
+        results.length;
+
+
+    const correct =
+        results.filter(
+            r => r.correct
+        ).length;
+
+
+    const incorrect =
+        total - correct;
+
+
+    const percentage =
+        total > 0
+            ? Math.round(
+                (
+                    correct /
+                    total
+                ) * 100
+            )
+            : 0;
+
+
+    document.getElementById(
+        "resultStudentName"
+    ).textContent =
+        studentName;
+
+
+    document.getElementById(
+        "scoreDisplay"
+    ).textContent =
+        percentage + "%";
+
+
+    document.getElementById(
+        "correctDisplay"
+    ).textContent =
+        correct;
+
+
+    document.getElementById(
+        "incorrectDisplay"
+    ).textContent =
+        incorrect;
+
+
+    document.getElementById(
+        "totalDisplay"
+    ).textContent =
+        total;
+
+
+    displayOperationBreakdown();
+
+    displayResultsTable();
+
+}
+
+
+/* =========================================
+   OPERATION BREAKDOWN
+   ========================================= */
+
+function displayOperationBreakdown() {
+
+    const operations = [
+
+        {
+            symbol: "+",
+            name: "Addition"
+        },
+
+        {
+            symbol: "-",
+            name: "Subtraction"
+        },
+
+        {
+            symbol: "×",
+            name: "Multiplication"
+        },
+
+        {
+            symbol: "÷",
+            name: "Division"
+        }
+
+    ];
+
+
+    const tbody =
+        document.getElementById(
+            "operationBreakdown"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    operations.forEach(
+        operation => {
+
+            const operationResults =
+                results.filter(
+                    r =>
+                        (r.operation === operation.symbol ||
+                         (operation.symbol === "×" && r.operation === "*") ||
+                         (operation.symbol === "÷" && r.operation === "/"))
+                );
+
+
+            if (
+                operationResults.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            const correct =
+                operationResults.filter(
+                    r => r.correct
+                ).length;
+
+
+            const total =
+                operationResults.length;
+
+
+            const accuracy =
+                Math.round(
+                    (
+                        correct /
+                        total
+                    ) * 100
+                );
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${operation.name}
+                    (${operation.symbol})
+                </td>
+
+                <td>
+                    ${total}
+                </td>
+
+                <td>
+                    ${correct}
+                </td>
+
+                <td>
+                    ${total - correct}
+                </td>
+
+                <td>
+                    ${accuracy}%
+                </td>
+
+            `;
+
+
+            tbody.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   DISPLAY QUESTION DETAILS
+   ========================================= */
+
+function displayResultsTable() {
+
+    const tbody =
+        document.getElementById(
+            "resultsTable"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    results.forEach(
+        result => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.className =
+                result.correct
+                    ? "correct"
+                    : "incorrect";
+
+
+            let studentAnswerDisplay =
+                result.studentAnswer === null
+                    ? "No Answer"
+                    : result.studentAnswer;
+
+
+            let resultDisplay;
+
+
+            if (
+                result.correct
+            ) {
+
+                resultDisplay =
+                    "Correct";
+
+            }
+
+            else if (
+                result.timedOut
+            ) {
+
+                resultDisplay =
+                    "Timed Out";
+
+            }
+
+            else {
+
+                resultDisplay =
+                    "Incorrect";
+
+            }
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${result.questionNumber}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        result.attemptedProblem
+                    )}
+                </td>
+
+                <td>
+                    ${result.correctAnswer}
+                </td>
+
+                <td>
+                    ${studentAnswerDisplay}
+                </td>
+
+                <td>
+                    ${resultDisplay}
+                </td>
+
+            `;
+
+
+            tbody.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+   ========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   CSV ESCAPE
+   ========================================= */
+
+function csvEscape(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    let text =
+        String(value);
+
+
+    /*
+        Prefix strings with an apostrophe
+        so Excel keeps math problems as text.
+    */
+
+    if (
+        typeof value === "string" &&
+        value.trim() !== ""
+    ) {
+
+        text =
+            "'" + text;
+
+    }
+
+
+    text =
+        text.replace(
+            /"/g,
+            '""'
+        );
+
+
+    return `"${text}"`;
+
+}
+
+
+/* =========================================
+   DOWNLOAD CSV REPORT
+   ========================================= */
+
+function downloadCSV() {
+
+    const total =
+        results.length;
+
+
+    const correct =
+        results.filter(
+            r => r.correct
+        ).length;
+
+
+    const percentage =
+        total > 0
+            ? Math.round(
+                (
+                    correct /
+                    total
+                ) * 100
+            )
+            : 0;
+
+
+    let csv = "";
+
+
+    const now =
+        new Date();
+
+
+    csv +=
+        "District Math Facts Assessment\n";
+
+
+    csv +=
+        `Student Name,${csvEscape(
+            studentName
+        )}\n`;
+
+
+    csv +=
+        `Teacher Last Name,${csvEscape(
+            teacherLastName
+        )}\n`;
+
+
+    csv +=
+        `Class Period,${csvEscape(
+            classPeriod
+        )}\n`;
+
+
+    csv +=
+        `Date,${csvEscape(
+            now.toLocaleString()
+        )}\n`;
+
+
+    csv +=
+        `Score,${percentage}%\n`;
+
+
+    csv +=
+        `Correct,${correct}\n`;
+
+
+    csv +=
+        `Incorrect,${total - correct}\n`;
+
+
+    csv +=
+        `Total Questions,${total}\n`;
+
+
+    csv +=
+        `Operations,${csvEscape(
+            getSelectedOperations().join(
+                ", "
+            )
+        )}\n`;
+
+
+    csv +=
+        `Number Range,${
+            document.getElementById(
+                "minNumber"
+            ).value
+        } to ${
+            document.getElementById(
+                "maxNumber"
+            ).value
+        }\n`;
+
+
+    csv +=
+        `Seconds Per Question,${
+            document.getElementById(
+                "secondsPerQuestion"
+            ).value
+        }\n`;
+
+
+    const answerTypeSelect =
+        document.getElementById(
+            "answerType"
+        );
+
+
+    const answerTypeText =
+        answerTypeSelect.options[
+            answerTypeSelect.selectedIndex
+        ].text;
+
+
+    csv +=
+        `Answer Type,${csvEscape(
+            answerTypeText
+        )}\n`;
+
+
+    csv +=
+        `Allow Zero,${
+            document.getElementById(
+                "allowZero"
+            ).checked
+                ? "Yes"
+                : "No"
+        }\n`;
+
+
+    csv += "\n";
+
+
+    csv +=
+        "Question #,Attempted Problem,Correct Answer,Student Answer,Result,Operation\n";
+
+
+    results.forEach(
+        result => {
+
+            let resultText;
+
+
+            if (
+                result.correct
+            ) {
+
+                resultText =
+                    "Correct";
+
+            }
+
+            else if (
+                result.timedOut
+            ) {
+
+                resultText =
+                    "Timed Out";
+
+            }
+
+            else {
+
+                resultText =
+                    "Incorrect";
+
+            }
+
+
+            csv +=
+
+                `${result.questionNumber},` +
+
+                `${csvEscape(
+                    result.attemptedProblem
+                )},` +
+
+                `${result.correctAnswer},` +
+
+                `${
+                    result.studentAnswer === null
+                        ? ""
+                        : result.studentAnswer
+                },` +
+
+                `${resultText},` +
+
+                `${({"+":"+","-":"−","*":"×","/":"÷"}[result.operation] || result.operation)}\n`;
+
+        }
+    );
+
+
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    link.href =
+        url;
+
+
+    const safeName =
+        studentName.replace(
+            /[^a-z0-9]/gi,
+            "_"
+        );
+
+
+    link.download =
+        `District_Math_Facts_${safeName}.csv`;
+
+
+    document.body.appendChild(
+        link
+    );
+
+
+    link.click();
+
+
+    document.body.removeChild(
+        link
+    );
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* =========================================
+   RESTART
+   ========================================= */
+
+function restartQuiz() {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        "resultsScreen"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "quizScreen"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "setupScreen"
+    ).classList.remove("hidden");
+
+    document.getElementById("assessmentSetupFields").classList.add("hidden");
+    document.getElementById("modeChooser").classList.remove("hidden");
+    document.getElementById("setupTitle").textContent = "Math Facts";
+
+    document.getElementById(
+        "answerInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "studentName"
+    ).focus();
+
+}
+
+
+/* =========================================
+   ENTER KEY
+   ========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        const quizScreen =
+            document.getElementById(
+                "quizScreen"
+            );
+
+
+        if (
+            !quizScreen.classList.contains(
+                "hidden"
+            ) &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            submitAnswer();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
