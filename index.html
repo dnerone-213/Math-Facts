@@ -501,7 +501,7 @@
                 <input
                     type="number"
                     id="questionCount"
-                    value="30"
+                    value="40"
                     min="1"
                     max="200"
                 >
@@ -1141,7 +1141,7 @@ function randomInteger(min, max) {
    GENERATE QUESTION
    ========================================= */
 
-function generateQuestion() {
+function generateQuestion(forcedOperation = null) {
 
     const min =
         parseInt(
@@ -1171,13 +1171,11 @@ function generateQuestion() {
         attempts++;
 
 
-        const operation =
-            operations[
-                Math.floor(
-                    Math.random() *
-                    operations.length
-                )
-            ];
+        // Use the assigned operation when balancing an assessment.
+        // Practice/other callers can still allow a random operation.
+        const operation = forcedOperation || operations[
+            Math.floor(Math.random() * operations.length)
+        ];
 
 
         let a;
@@ -1776,13 +1774,35 @@ function startQuiz() {
     usedQuestionKeys = new Set();
 
 
+    // Distribute questions as evenly as possible across selected operations.
+    // Each selected operation receives either floor(N / operations) or
+    // ceil(N / operations) questions, so counts differ by no more than one.
+    const operationOrder = [];
+    const questionsPerOperation = Math.floor(questionCount / operations.length);
+    const extraQuestions = questionCount % operations.length;
+    const shuffledOperations = shuffleArray(operations);
+
+    operations.forEach(operation => {
+        for (let j = 0; j < questionsPerOperation; j++) {
+            operationOrder.push(operation);
+        }
+    });
+
+    // Randomly assign any leftover questions to selected operations.
+    shuffledOperations.slice(0, extraQuestions).forEach(operation => {
+        operationOrder.push(operation);
+    });
+
+    // Mix the order so operations are not grouped together.
+    const balancedOperationOrder = shuffleArray(operationOrder);
+
     for (
         let i = 0;
         i < questionCount;
         i++
     ) {
 
-        const question = generateQuestion();
+        const question = generateQuestion(balancedOperationOrder[i]);
 
         if (!question) {
             alert(
