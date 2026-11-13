@@ -210,6 +210,14 @@
         text-align: center;
     }
 
+    /* Keep the Submit Answer button centered in type-answer mode. */
+    #typeAnswerControls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
     .results-summary {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -424,6 +432,13 @@
             font-size: 30px;
         }
     }
+
+    .mic-test-panel { text-align: center; max-width: 620px; margin: 0 auto; }
+    .mic-level-track { width: 100%; height: 24px; background: #e5e5e5; border: 2px solid #222; border-radius: 20px; overflow: hidden; margin: 18px 0 24px; }
+    .mic-level-fill { height: 100%; width: 0%; background: #c8102e; border-radius: 18px; transition: width 0.08s linear; }
+    .mic-test-actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:22px; }
+    #micTestMessage { min-height: 24px; color:#555; }
+
 </style>
 </head>
 
@@ -464,190 +479,55 @@
         <div id="assessmentSetupFields" class="hidden">
 
         <label for="studentName">Student Name</label>
+        <input type="text" id="studentName" placeholder="Enter your first and last name" autocomplete="off">
 
-        <input
-            type="text"
-            id="studentName"
-            placeholder="Enter your first and last name"
-            autocomplete="off"
-        >
-
-        <label for="teacherLastName">Teacher Last Name</label>
-
-        <input
-            type="text"
-            id="teacherLastName"
-            placeholder="Enter teacher last name"
-            autocomplete="off"
-        >
-
-        <label for="classPeriod">Class Period</label>
-
-        <input
-            type="text"
-            id="classPeriod"
-            placeholder="Enter class period"
-            autocomplete="off"
-        >
-
-        <div class="settings-grid">
-
-            <div>
-
-                <label for="questionCount">
-                    Number of Questions
-                </label>
-
-                <input
-                    type="number"
-                    id="questionCount"
-                    value="40"
-                    min="1"
-                    max="200"
-                >
-
-            </div>
-
-            <div>
-
-                <label for="secondsPerQuestion">
-                    Seconds Per Question
-                </label>
-
-                <input
-                    type="number"
-                    id="secondsPerQuestion"
-                    value="4"
-                    min="1"
-                    max="60"
-                >
-
-            </div>
-
-        </div>
-
-        <h3>Operations</h3>
-
-        <div class="operation-box">
-
-            <label class="operation-option">
-
-                <input
-                    type="checkbox"
-                    id="addition"
-                    checked
-                >
-
-                Addition (+)
-
-            </label>
-
-            <label class="operation-option">
-
-                <input
-                    type="checkbox"
-                    id="subtraction"
-                    checked
-                >
-
-                Subtraction (-)
-
-            </label>
-
-            <label class="operation-option">
-
-                <input
-                    type="checkbox"
-                    id="multiplication"
-                    checked
-                >
-
-                Multiplication (×)
-
-            </label>
-
-            <label class="operation-option">
-
-                <input
-                    type="checkbox"
-                    id="division"
-                    checked
-                >
-
-                Division (÷)
-
-            </label>
-
-        </div>
-
-        <h3>Number Range</h3>
-
-        <div class="settings-grid">
-
-            <div>
-
-                <label for="minNumber">
-                    Beginning Number
-                </label>
-
-                <input
-                    type="number"
-                    id="minNumber"
-                    value="-12"
-                >
-
-            </div>
-
-            <div>
-
-                <label for="maxNumber">
-                    Ending Number
-                </label>
-
-                <input
-                    type="number"
-                    id="maxNumber"
-                    value="12"
-                >
-
-            </div>
-
-        </div>
-
-        <h3>Answer Type</h3>
-
-        <label for="answerType">
-            What types of answers should be included?
-        </label>
-
-        <select id="answerType">
-
-            <option value="positive">
-                Positive Answers Only
-            </option>
-
-            <option value="negative">
-                Negative Answers Only
-            </option>
-
-            <option value="both" selected>
-                Positive & Negative Answers
-            </option>
-
+        <label for="gradeLevel">Grade</label>
+        <select id="gradeLevel" onchange="applyGradeDefaults()" required>
+            <option value="" selected disabled>Select Grade</option>
+            <option value="kindergarten">Kindergarten</option>
+            <option value="1st grade">1st Grade</option>
+            <option value="2nd grade">2nd Grade</option>
+            <option value="3rd grade">3rd Grade</option>
+            <option value="4th grade">4th Grade</option>
+            <option value="5th grade">5th Grade</option>
+            <option value="6th grade">6th Grade</option>
+            <option value="7th grade">7th Grade</option>
+            <option value="8th grade">8th Grade</option>
+            <option value="high school">High School</option>
         </select>
 
-        <label class="checkbox-row">
+        <label for="answerMode">Answer Method</label>
+        <select id="answerMode" onchange="updateAnswerMode()">
+            <option value="type" selected>Type Answers</option>
+<!--            <option value="speak">Speak Answers (Microphone)</option>           -->   
+        </select>
 
-            <input
-                type="checkbox"
-                id="allowZero"
-                checked
-            >
+        <label for="teacherLastName">Teacher</label>
+        <select id="teacherLastName">
+            <option value="">Select Teacher</option>
+        </select>
 
-            Allow Zero Answers
+        <div id="periodSelection" class="hidden">
+            <label for="classPeriodSelect">Period</label>
+            <select id="classPeriodSelect">
+                <option value="">Select Period</option>
+            </select>
+        </div>
 
-        </label>
-
+        <!-- Assessment settings are hidden from students. Grade profiles below control these values. -->
+        <div class="hidden" aria-hidden="true">
+            <input type="number" id="questionCount" value="40">
+            <input type="number" id="secondsPerQuestion" value="4">
+            <input type="checkbox" id="addition" checked>
+            <input type="checkbox" id="subtraction" checked>
+            <input type="checkbox" id="multiplication" checked>
+            <input type="checkbox" id="division" checked>
+            <select id="answerType">
+                <option value="positive">Positive Answers Only</option>
+                <option value="negative">Negative Answers Only</option>
+                <option value="both" selected>Positive &amp; Negative Answers</option>
+            </select>
+            <input type="checkbox" id="allowZero" checked>
         </div>
 
         <div class="center actions-row">
@@ -659,6 +539,25 @@
 
     </div>
 
+
+    <!-- =========================================
+         MICROPHONE CHECK SCREEN
+         ========================================= -->
+    <div id="microphoneTestScreen" class="card hidden">
+        <div class="mic-test-panel">
+            <h2>Microphone Check</h2>
+            <p>Speak at a normal volume. The bar will move when speech is detected.</p>
+            <label for="micLevelFill">Speech Detection</label>
+            <div class="mic-level-track" role="meter" aria-label="Speech detection activity" aria-valuemin="0" aria-valuemax="100">
+                <div id="micLevelFill" class="mic-level-fill"></div>
+            </div>
+            <p id="micTestStatus" aria-live="polite">Allow microphone access if your browser asks.</p>
+            <div class="mic-test-actions">
+                <button id="startAssessmentFromMicTest" onclick="beginAssessmentFromMicTest()" disabled>Start Assessment</button>
+                <button class="secondary-button" onclick="cancelMicrophoneTest()">Back</button>
+            </div>
+        </div>
+    </div>
 
     <!-- =========================================
          FLASH CARD PRACTICE SETUP
@@ -723,7 +622,7 @@
 
         <div class="center">
             <button onclick="startFlashCardPractice()">Start Flash Cards</button>
-            <button class="secondary-button" onclick="backToAssessmentSetup()">Back to Assessment</button>
+            <button class="secondary-button" onclick="backToAssessmentSetup()">Back to Mode Selection</button>
         </div>
     </div>
 
@@ -778,7 +677,7 @@
         <div id="practiceMissedList" class="instructions"></div>
         <div class="center">
             <button onclick="openPracticeMode()">Practice Again</button>
-            <button class="secondary-button" onclick="backToAssessmentSetup()">Back to Assessment</button>
+            <button class="secondary-button" onclick="backToAssessmentSetup()">Back to Mode Selection</button>
         </div>
     </div>
 
@@ -846,14 +745,17 @@
             autocomplete="off"
         >
 
-
-        <div class="center">
-
+        <div class="center" id="typeAnswerControls">
             <button onclick="submitAnswer()">
                 Submit Answer
             </button>
-
         </div>
+
+        <div class="center" id="speakAnswerControls" style="display:none;">
+            <p><strong>Speak your answer.</strong></p>
+        </div>
+
+        <p id="speechStatus" class="center" aria-live="polite"></p>
 
     </div>
 
@@ -944,6 +846,9 @@
         <h3>Student</h3>
 
         <p id="resultStudentName"></p>
+        <p id="resultGradeLevel"></p>
+        <p id="resultTeacherLastName"></p>
+        <p id="resultClassPeriod"></p>
 
 
         <h3>Operation Breakdown</h3>
@@ -1071,6 +976,123 @@ let results = [];
 let studentName = "";
 let teacherLastName = "";
 let classPeriod = "";
+let gradeLevel = "";
+let assessmentAnswerMethod = "type";
+
+/* ============================================================
+   EDITABLE TEACHERS AND PERIODS BY GRADE
+   ============================================================
+   EDIT TEACHERS:
+   Replace the sample names below with your teachers' last names.
+   Add more names by adding another quoted name and comma.
+   Each grade has its OWN list. Names do not carry over to other grades.
+
+   EDIT PERIODS:
+   Kindergarten through 4th grade do not use a period dropdown.
+   5th, 6th, 7th, and 8th grade use Periods 1-8.
+   High School uses Periods 1-9.
+   You can change these lists below if your schedule changes.
+*/
+const TEACHERS_BY_GRADE = {
+    "kindergarten": [
+        "Test Kindergarten Teacher 1",
+        "Test Kindergarten Teacher 2"
+    ],
+    "1st grade": [
+        "Test 1st Grade Teacher 1",
+        "Test 1st Grade Teacher 2"
+    ],
+    "2nd grade": [
+        "Test 2nd Grade Teacher 1",
+        "Test 2nd Grade Teacher 2"
+    ],
+    "3rd grade": [
+        "Test 3rd Grade Teacher 1",
+        "Test 3rd Grade Teacher 2"
+    ],
+    "4th grade": [
+        "Test 4th Grade Teacher 1",
+        "Test 4th Grade Teacher 2"
+    ],
+    "5th grade": [
+        "Test 5th Grade Teacher 1",
+        "Test 5th Grade Teacher 2"
+    ],
+    "6th grade": [
+        "Test 6th Grade Teacher 1",
+        "Test 6th Grade Teacher 2"
+    ],
+    "7th grade": [
+        "Test 7th Grade Teacher 1",
+        "Test 7th Grade Teacher 2"
+    ],
+    "8th grade": [
+        "Test 8th Grade Teacher 1",
+        "Test 8th Grade Teacher 2"
+    ],
+    "high school": [
+        "Mr. Garcar",
+        "Mr. Nerone",
+	"Mr. Barth",
+	"Mr. Silver",
+	"Miss Cappola",
+	"Ms. Edwards",
+	"Ms. Franklin"
+    ]
+};
+
+const PERIODS_BY_GRADE = {
+    "kindergarten": [],
+    "1st grade": [],
+    "2nd grade": [],
+    "3rd grade": [],
+    "4th grade": [],
+    "5th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "6th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "7th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "8th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "high school": ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+};
+
+function populateAssessmentDropdowns() {
+    updateGradeDependentFields();
+}
+
+function updateGradeDependentFields() {
+    const grade = document.getElementById("gradeLevel").value;
+    const teacherSelect = document.getElementById("teacherLastName");
+    const periodSelect = document.getElementById("classPeriodSelect");
+    const periodSelection = document.getElementById("periodSelection");
+
+    // Rebuild the teacher list using only the selected grade's teachers.
+    teacherSelect.innerHTML = '<option value="">Select Teacher</option>';
+    const teachers = TEACHERS_BY_GRADE[grade] || [];
+    teachers.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        teacherSelect.appendChild(option);
+    });
+
+    // Rebuild periods for the selected grade.
+    periodSelect.innerHTML = '<option value="">Select Period</option>';
+    const periods = PERIODS_BY_GRADE[grade] || [];
+    periods.forEach(period => {
+        const option = document.createElement("option");
+        option.value = period;
+        option.textContent = "Period " + period;
+        periodSelect.appendChild(option);
+    });
+
+    const usesPeriods = periods.length > 0;
+    periodSelection.classList.toggle("hidden", !usesPeriods);
+    periodSelect.required = usesPeriods;
+
+    // Clear old selections so a student cannot carry a teacher or period
+    // from the previous grade into the new grade.
+    teacherSelect.value = "";
+    periodSelect.value = "";
+}
 
 let timerInterval = null;
 
@@ -1087,6 +1109,135 @@ let practiceMissedFacts = [];
 let practiceStudentName = "";
 
 
+
+/* ============================================================
+   GRADE-BASED ASSESSMENT DEFAULTS
+   ============================================================ */
+const GRADE_DEFAULTS = {
+    "kindergarten": { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition"] },
+    "1st grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
+    "2nd grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
+    "3rd grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
+    "4th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "5th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "6th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "7th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "8th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "high school":  { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] }
+};
+
+/* ============================================================
+   EDITABLE NUMBER RANGES BY GRADE AND OPERATION
+   ============================================================
+   Change the min and max values independently for every grade
+   and operation. These ranges control the OPERANDS for addition,
+   subtraction, and multiplication. For division, they control
+   the whole-number QUOTIENT; numerator and divisor are generated
+   separately so division answers remain whole numbers.
+
+   Example: "4th grade": { "+": { min: 0, max: 20 }, ... }
+   Use integer values. Keep min less than or equal to max.
+
+   The starting values below are suggested defaults. Adjust them
+   to match your district's curriculum and assessment expectations.
+   Grades 6-8 and high school are fully editable as well.
+*/
+const GRADE_OPERATION_RANGES = {
+    "kindergarten": {
+        "+": { min: 0, max: 5 },
+        "-": { min: 0, max: 5 },
+        "*": { min: 0, max: 5 },
+        "/": { min: 0, max: 5 }
+    },
+    "1st grade": {
+        "+": { min: 0, max: 10 },
+        "-": { min: 0, max: 10 },
+        "*": { min: 0, max: 5 },
+        "/": { min: 0, max: 10 }
+    },
+    "2nd grade": {
+        "+": { min: 0, max: 12 },
+        "-": { min: 0, max: 12 },
+        "*": { min: 0, max: 10 },
+        "/": { min: 0, max: 12 }
+    },
+    "3rd grade": {
+        "+": { min: 0, max: 20 },
+        "-": { min: 0, max: 20 },
+        "*": { min: 0, max: 5 },
+        "/": { min: 0, max: 12 }
+    },
+    "4th grade": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: 0, max: 12 },
+        "/": { min: 0, max: 12 }
+    },
+    "5th grade": {
+        "+": { min: -20, max: 20 },
+        "-": { min: -20, max: 20 },
+        "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "6th grade": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "7th grade": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "8th grade": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "high school": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    }
+};
+
+function getOperationRange(operation) {
+    const selectedGrade = document.getElementById("gradeLevel")?.value || gradeLevel;
+    if (!selectedGrade) return null;
+
+    const gradeRanges = GRADE_OPERATION_RANGES[selectedGrade];
+    return gradeRanges ? gradeRanges[operation] : null;
+}
+
+function applyGradeDefaults() {
+    const gradeSelect = document.getElementById("gradeLevel");
+    if (!gradeSelect) return;
+
+    // Always refresh the teacher and period lists for the current grade.
+    // A blank grade clears those lists without silently selecting High School.
+    updateGradeDependentFields();
+
+    const settings = GRADE_DEFAULTS[gradeSelect.value];
+    if (!settings) return;
+
+    const setValue = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) element.value = value;
+    };
+    setValue("questionCount", settings.questionCount);
+    setValue("secondsPerQuestion", settings.secondsPerQuestion);
+    setValue("answerType", settings.answerType);
+    const zero = document.getElementById("allowZero");
+    if (zero) zero.checked = settings.allowZero;
+    ["addition", "subtraction", "multiplication", "division"].forEach(id => {
+        const checkbox = document.getElementById(id);
+        if (checkbox) checkbox.checked = settings.operations.includes(id);
+    });
+}
 
 /* =========================================
    GET SELECTED OPERATIONS
@@ -1143,15 +1294,7 @@ function randomInteger(min, max) {
 
 function generateQuestion(forcedOperation = null) {
 
-    const min =
-        parseInt(
-            document.getElementById("minNumber").value
-        );
-
-    const max =
-        parseInt(
-            document.getElementById("maxNumber").value
-        );
+    updateAnswerMode();
 
     const operations =
         getSelectedOperations();
@@ -1176,6 +1319,10 @@ function generateQuestion(forcedOperation = null) {
         const operation = forcedOperation || operations[
             Math.floor(Math.random() * operations.length)
         ];
+
+        const operationRange = getOperationRange(operation);
+        const min = operationRange.min;
+        const max = operationRange.max;
 
 
         let a;
@@ -1245,51 +1392,30 @@ function generateQuestion(forcedOperation = null) {
         else if (operation === "/") {
 
             /*
-                We create the divisor first and then
-                create an integer quotient so that
-                every division problem has a whole-number
-                answer.
+                The quotient must be a whole number within
+                the selected Beginning/Ending Number range.
+                The divisor is independently selected from
+                1 through 12, and the numerator is calculated
+                from divisor × quotient. Neither operand is
+                restricted to the selected number range.
             */
 
-            b = randomInteger(min, max);
-
-
-            if (b === 0) {
-                continue;
-            }
-
-
             let possibleQuotients = [];
-
 
             for (
                 let q = min;
                 q <= max;
                 q++
             ) {
-
-                const numerator =
-                    b * q;
-
-
-                if (
-                    numerator >= min &&
-                    numerator <= max
-                ) {
-
-                    possibleQuotients.push(q);
-
-                }
-
+                possibleQuotients.push(q);
             }
 
-
-            if (
-                possibleQuotients.length === 0
-            ) {
+            if (possibleQuotients.length === 0) {
                 continue;
             }
 
+            // Use a standard positive divisor from 1 through 12.
+            b = randomInteger(1, 12);
 
             const q =
                 possibleQuotients[
@@ -1299,13 +1425,13 @@ function generateQuestion(forcedOperation = null) {
                     )
                 ];
 
-
+            // The numerator may fall outside the selected range.
             a = b * q;
 
             answer = q;
 
             problemText =
-                `${a} ÷ ${b}`;
+                `${a} \u00F7 ${b}`;
 
         }
 
@@ -1384,7 +1510,7 @@ function generateQuestion(forcedOperation = null) {
    ========================================= */
 
 function hideAllMainScreens() {
-    ["setupScreen", "practiceSetupScreen", "practiceScreen", "practiceResultsScreen", "quizScreen", "resultsScreen"].forEach(id => {
+    ["setupScreen", "microphoneTestScreen", "practiceSetupScreen", "practiceScreen", "practiceResultsScreen", "quizScreen", "resultsScreen"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add("hidden");
     });
@@ -1396,6 +1522,7 @@ function showAssessmentSetup() {
     document.getElementById("modeChooser").classList.add("hidden");
     document.getElementById("setupTitle").textContent = "📝 Assessment Mode";
     document.getElementById("assessmentSetupFields").classList.remove("hidden");
+    applyGradeDefaults();
     document.getElementById("studentName").focus();
 }
 
@@ -1480,11 +1607,6 @@ function buildPracticeDeck() {
     }
 
     return cards.filter(card => card && Number.isFinite(card.answer));
-}
-
-function targetSafeDivisor() {
-    const target = parseInt(document.getElementById("practiceTarget").value, 10);
-    return target === 0 ? 1 : target;
 }
 
 function makePracticeCard(operation, first, second) {
@@ -1664,27 +1786,33 @@ function endFlashCardPractice() {
     finishFlashCardPractice();
 }
 
+let micPermissionReady = false;
+
 /* =========================================
    START QUIZ
    ========================================= */
 
 function startQuiz() {
 
+    // Require an explicit grade selection before reading grade-specific data.
+    gradeLevel = document.getElementById("gradeLevel").value;
+    if (!gradeLevel || !GRADE_DEFAULTS[gradeLevel] || !GRADE_OPERATION_RANGES[gradeLevel]) {
+        alert("Please select a grade before starting the assessment.");
+        document.getElementById("gradeLevel").focus();
+        return;
+    }
+
     studentName =
         document.getElementById(
             "studentName"
         ).value.trim();
 
-    teacherLastName =
-        document.getElementById(
-            "teacherLastName"
-        ).value.trim();
+    teacherLastName = document.getElementById("teacherLastName").value;
+    classPeriod = document.getElementById("classPeriodSelect").value;
+    assessmentAnswerMethod = document.getElementById("answerMode").value;
 
-    classPeriod =
-        document.getElementById(
-            "classPeriod"
-        ).value.trim();
-
+    // Do not call applyGradeDefaults() here: it rebuilds the teacher and
+    // period dropdowns, which would erase the user's selections.
 
     if (!studentName) {
 
@@ -1699,7 +1827,7 @@ function startQuiz() {
     if (!teacherLastName) {
 
         alert(
-            "Please enter the teacher's last name."
+            "Please select a teacher. Add teacher names to the TEACHERS_BY_GRADE list for this grade in the code if the list is empty."
         );
 
         document.getElementById("teacherLastName").focus();
@@ -1708,18 +1836,11 @@ function startQuiz() {
 
     }
 
-    if (!classPeriod) {
-
-        alert(
-            "Please enter the class period."
-        );
-
-        document.getElementById("classPeriod").focus();
-
+    if ((PERIODS_BY_GRADE[gradeLevel] || []).length > 0 && !classPeriod) {
+        alert("Please select a class period.");
+        document.getElementById("classPeriodSelect").focus();
         return;
-
     }
-
 
     const operations =
         getSelectedOperations();
@@ -1736,25 +1857,13 @@ function startQuiz() {
     }
 
 
-    const min =
-        parseInt(
-            document.getElementById("minNumber").value
-        );
-
-    const max =
-        parseInt(
-            document.getElementById("maxNumber").value
-        );
-
-
-    if (min > max) {
-
-        alert(
-            "The beginning number must be less than or equal to the ending number."
-        );
-
-        return;
-
+    for (const operation of operations) {
+        const range = getOperationRange(operation);
+        if (!range || !Number.isInteger(range.min) || !Number.isInteger(range.max) || range.min > range.max) {
+            const operationName = { "+": "addition", "-": "subtraction", "*": "multiplication", "/": "division" }[operation];
+            alert("Please check the minimum and maximum values in OPERATION_RANGES for " + operationName + ". The minimum must be less than or equal to the maximum.");
+            return;
+        }
     }
 
 
@@ -1828,27 +1937,83 @@ function startQuiz() {
     ).textContent = questionCount;
 
 
-    document.getElementById(
-        "setupScreen"
-    ).classList.add("hidden");
-
-
-    document.getElementById(
-        "resultsScreen"
-    ).classList.add("hidden");
-
+    document.getElementById("setupScreen").classList.add("hidden");
+    document.getElementById("resultsScreen").classList.add("hidden");
     document.getElementById("practiceSetupScreen").classList.add("hidden");
     document.getElementById("practiceScreen").classList.add("hidden");
     document.getElementById("practiceResultsScreen").classList.add("hidden");
 
+    if (assessmentAnswerMethod === "speak") {
+        // Ask for microphone permission from the setup button's user action.
+        openMicrophoneTest();
+        return;
+    }
 
-    document.getElementById(
-        "quizScreen"
-    ).classList.remove("hidden");
+    beginAssessment();
+}
 
+function openMicrophoneTest() {
+    const testScreen = document.getElementById("microphoneTestScreen");
+    const startButton = document.getElementById("startAssessmentFromMicTest");
+    const status = document.getElementById("micTestStatus");
+    const fill = document.getElementById("micLevelFill");
 
+    ["setupScreen", "practiceSetupScreen", "practiceScreen", "practiceResultsScreen", "quizScreen", "resultsScreen"].forEach(id => {
+        const screen = document.getElementById(id);
+        if (screen) screen.classList.add("hidden");
+    });
+    testScreen.classList.remove("hidden");
+    testScreen.style.display = "block";
+    if (startButton) startButton.disabled = true;
+    if (status) status.textContent = "Connecting to speech recognition. Allow microphone access if Chrome asks.";
+    if (fill) fill.style.width = "0%";
+
+    micPermissionReady = false;
+    speechTestMode = true;
+
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognitionAPI) {
+        if (status) status.textContent = "Speech recognition is not supported in this browser. Please use Chrome or choose Type Mode.";
+        return;
+    }
+
+    // Use SpeechRecognition as the only microphone-access mechanism.
+    // A separate getUserMedia request caused Chrome to ask for permission twice.
+    startSpeechRecognition(true);
+}
+
+// The test bar indicates recognized speech rather than raw microphone volume.
+// This avoids opening a second microphone stream and requesting permission twice.
+function stopMicrophoneMeter() {
+    const fill = document.getElementById("micLevelFill");
+    if (fill) fill.style.width = "0%";
+}
+
+function beginAssessmentFromMicTest() {
+    if (!micPermissionReady || !speechIsRunning) {
+        const status = document.getElementById("micTestStatus");
+        if (status) status.textContent = "Please wait until Chrome confirms that speech recognition is connected.";
+        return;
+    }
+    speechTestMode = false;
+    const testScreen = document.getElementById("microphoneTestScreen");
+    if (testScreen) testScreen.style.display = "none";
+    beginAssessment();
+}
+
+function beginAssessment() {
+    stopMicrophoneMeter();
+    document.getElementById("microphoneTestScreen").classList.add("hidden");
+    document.getElementById("quizScreen").classList.remove("hidden");
     showQuestion();
+}
 
+function cancelMicrophoneTest() {
+    stopMicrophoneMeter();
+    stopAutomaticSpeechRecognition();
+    micPermissionReady = false;
+    document.getElementById("microphoneTestScreen").classList.add("hidden");
+    document.getElementById("setupScreen").classList.remove("hidden");
 }
 
 
@@ -1892,9 +2057,18 @@ function showQuestion() {
 
 
     answerInput.value = "";
+    speechAnswerHandledForQuestion = -1;
+    speechSessionAlreadyAnswered = false;
 
-    answerInput.focus();
+    updateAnswerMode();
 
+    // Speak mode starts recognition once from the microphone test screen.
+    // Do not call startSpeechRecognition() for every question: Chrome may
+    // still be completing an onend/restart cycle from the previous question.
+
+    if (assessmentAnswerMethod === "type") {
+        answerInput.focus();
+    }
 
     startTimer();
 
@@ -1957,6 +2131,239 @@ function startTimer() {
 }
 
 /* =========================================
+   TYPE OR SPEAK ANSWER
+   ========================================= */
+
+let speechRecognition = null;
+let speechListeningRequested = false;
+let speechIsRunning = false;
+let speechRestartTimer = null;
+let speechAnswerHandledForQuestion = -1;
+let speechSessionAlreadyAnswered = false;
+let speechTestMode = false;
+
+function updateAnswerMode() {
+    const mode = assessmentAnswerMethod || document.getElementById("answerMode").value;
+    const answerInput = document.getElementById("answerInput");
+    const typeControls = document.getElementById("typeAnswerControls");
+    const speakControls = document.getElementById("speakAnswerControls");
+
+    if (mode === "speak") {
+        answerInput.style.display = "none";
+        typeControls.style.display = "none";
+        speakControls.style.display = "block";
+    } else {
+        stopAutomaticSpeechRecognition();
+        answerInput.style.display = "block";
+        typeControls.style.display = "flex";
+        speakControls.style.display = "none";
+    }
+}
+
+function updateSpeechStatus(message) {
+    const status = document.getElementById("speechStatus");
+    if (status) status.textContent = message;
+}
+
+function startSpeechRecognition(isMicrophoneTest = false) {
+    if (isMicrophoneTest) speechTestMode = true;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        const status = document.getElementById("micTestStatus") || document.getElementById("speechStatus");
+        if (status) status.textContent = "Speech recognition is not supported in this browser. Please use Chrome or choose Type Mode.";
+        const button = document.getElementById("startAssessmentFromMicTest");
+        if (button) button.disabled = true;
+        return;
+    }
+
+    speechListeningRequested = true;
+    // Prevent duplicate starts while recognition is already active or while
+    // the onend handler has a restart queued.
+    if (speechIsRunning || speechRestartTimer) return;
+
+    if (!speechRecognition) {
+        speechRecognition = new SpeechRecognition();
+        speechRecognition.continuous = true;
+        speechRecognition.interimResults = true;
+        speechRecognition.maxAlternatives = 5;
+
+        speechRecognition.onstart = () => {
+            if (!speechListeningRequested) {
+                try { speechRecognition.abort(); } catch (e) {}
+                return;
+            }
+            speechIsRunning = true;
+            micPermissionReady = true;
+            if (speechTestMode) {
+                const button = document.getElementById("startAssessmentFromMicTest");
+                const status = document.getElementById("micTestStatus");
+                if (button) button.disabled = false;
+                if (status) status.textContent = "Microphone ready. Say a number to test it.";
+            }
+            updateSpeechStatus("Listening...");
+        };
+
+        speechRecognition.onresult = (event) => {
+            if (!speechListeningRequested) return;
+            let interim = "";
+            let finalText = "";
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const phrase = Array.from(event.results[i]).map(x => x.transcript || "").join(" ").trim();
+                if (event.results[i].isFinal) finalText += " " + phrase;
+                else interim += " " + phrase;
+            }
+            const heard = (finalText || interim).trim();
+            if (!heard) return;
+
+            if (speechTestMode) {
+                const status = document.getElementById("micTestStatus");
+                const fill = document.getElementById("micLevelFill");
+                if (status) status.textContent = "Speech detected. The microphone is ready.";
+                if (fill) fill.style.width = "100%";
+                return;
+            }
+            if (!finalText.trim()) return;
+            if (speechSessionAlreadyAnswered || speechAnswerHandledForQuestion === currentQuestionIndex) return;
+
+            let answer = convertSpokenNumber(finalText.trim());
+            if (answer === null || answer === undefined || Number.isNaN(Number(answer))) {
+                for (const word of finalText.trim().split(/\s+/)) {
+                    const candidate = convertSpokenNumber(word);
+                    if (candidate !== null && candidate !== undefined && !Number.isNaN(Number(candidate))) answer = candidate;
+                }
+            }
+            if (answer === null || answer === undefined || Number.isNaN(Number(answer))) {
+                updateSpeechStatus("I didn't catch that. Please say the answer again.");
+                return;
+            }
+            speechSessionAlreadyAnswered = true;
+            speechAnswerHandledForQuestion = currentQuestionIndex;
+            const field = document.getElementById("answerInput");
+            if (field) field.value = String(answer);
+            submitAnswer();
+        };
+
+        speechRecognition.onerror = (event) => {
+            if (!speechListeningRequested) return;
+            speechIsRunning = false;
+            const code = event && event.error ? event.error : "unknown";
+            if (code === "not-allowed" || code === "service-not-allowed") {
+                speechListeningRequested = false;
+                micPermissionReady = false;
+                const status = document.getElementById("micTestStatus");
+                if (status) status.textContent = "Microphone access was blocked. Allow microphone access for this site in Chrome settings.";
+                updateSpeechStatus("Microphone access blocked.");
+                const button = document.getElementById("startAssessmentFromMicTest");
+                if (button) button.disabled = true;
+                return;
+            }
+            if (code === "audio-capture") {
+                const status = document.getElementById("micTestStatus");
+                if (status) status.textContent = "Chrome could not access a microphone. Check the microphone connection.";
+            }
+            updateSpeechStatus("Speech recognition paused. Reconnecting...");
+        };
+
+        speechRecognition.onend = () => {
+            speechIsRunning = false;
+            if (!speechListeningRequested) return;
+            if (speechRestartTimer) clearTimeout(speechRestartTimer);
+            speechRestartTimer = setTimeout(() => {
+                speechRestartTimer = null;
+                if (!speechListeningRequested || speechIsRunning || !speechRecognition) return;
+                try { speechRecognition.start(); }
+                catch (error) {
+                    // InvalidStateError means Chrome is already starting or
+                    // stopping the same recognition session; do not launch a
+                    // second session or trigger another permission request.
+                    if (error && error.name !== "InvalidStateError") {
+                        updateSpeechStatus("Speech recognition could not restart. Check Chrome microphone permissions.");
+                    }
+                }
+            }, 500);
+        };
+    }
+
+    try { speechRecognition.start(); }
+    catch (error) {
+        if (!error || error.name !== "InvalidStateError") updateSpeechStatus("Could not start speech recognition. Check Chrome microphone permissions.");
+    }
+}
+
+function stopAutomaticSpeechRecognition() {
+    // Set this first so any queued browser events cannot restart listening.
+    speechListeningRequested = false;
+    speechTestMode = false;
+    if (speechRestartTimer) {
+        clearTimeout(speechRestartTimer);
+        speechRestartTimer = null;
+    }
+    if (speechRecognition) {
+        const recognitionToStop = speechRecognition;
+        recognitionToStop.onstart = null;
+        recognitionToStop.onresult = null;
+        recognitionToStop.onerror = null;
+        recognitionToStop.onend = null;
+        try { recognitionToStop.abort(); } catch (error) {
+            try { recognitionToStop.stop(); } catch (e) {}
+        }
+    }
+    speechIsRunning = false;
+    speechRecognition = null;
+    micPermissionReady = false;
+}
+
+function convertSpokenNumber(transcript) {
+    let text = String(transcript || "").toLowerCase().trim();
+    text = text.replace(/[,.!?]/g, " ").replace(/\b(the answer is|my answer is|answer is|i think it is|it's)\b/g, " ").trim();
+    if (!text) return null;
+
+    // Accept a numeral even if Chrome includes a short introductory phrase.
+    const digitMatch = text.match(/(?:^|\s)(-?\d+)(?:\s|$)/);
+    if (digitMatch) return Number(digitMatch[1]);
+
+    let negative = false;
+    if (/^(negative|minus)\s+/.test(text)) {
+        negative = true;
+        text = text.replace(/^(negative|minus)\s+/, "");
+    }
+
+    text = text.replace(/-/g, " ").replace(/\band\b/g, " ").replace(/\s+/g, " ").trim();
+    const homophones = { for: "four", fore: "four", to: "two", too: "two", won: "one", ate: "eight", oh: "zero", naught: "zero" };
+    text = text.split(" ").map(word => homophones[word] || word).join(" ");
+
+    const small = {
+        zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5,
+        six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+        eleven: 11, twelve: 12, thirteen: 13, fourteen: 14,
+        fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18,
+        nineteen: 19
+    };
+    const tens = {
+        twenty: 20, thirty: 30, forty: 40, fifty: 50,
+        sixty: 60, seventy: 70, eighty: 80, ninety: 90
+    };
+
+    let total = 0;
+    let current = 0;
+    const words = text.split(/\s+/).filter(Boolean);
+    if (!words.length) return null;
+
+    for (const word of words) {
+        if (Object.prototype.hasOwnProperty.call(small, word)) current += small[word];
+        else if (Object.prototype.hasOwnProperty.call(tens, word)) current += tens[word];
+        else if (word === "hundred") current = (current || 1) * 100;
+        else if (word === "thousand") {
+            total += (current || 1) * 1000;
+            current = 0;
+        } else return null;
+    }
+
+    const value = total + current;
+    return negative ? -value : value;
+}
+
+/* =========================================
    SUBMIT ANSWER
    ========================================= */
 
@@ -1968,6 +2375,10 @@ function submitAnswer(
         timerInterval
     );
 
+    if (timedOut && assessmentAnswerMethod === "speak") {
+        speechSessionAlreadyAnswered = true;
+        speechAnswerHandledForQuestion = currentQuestionIndex;
+    }
 
     const question =
         questions[
@@ -2044,6 +2455,9 @@ function submitAnswer(
 
 function finishQuiz() {
 
+    stopMicrophoneMeter();
+    stopAutomaticSpeechRecognition();
+
     clearInterval(
         timerInterval
     );
@@ -2095,10 +2509,11 @@ function displayResults() {
             : 0;
 
 
-    document.getElementById(
-        "resultStudentName"
-    ).textContent =
-        studentName;
+    document.getElementById("resultStudentName").textContent = studentName;
+    document.getElementById("resultGradeLevel").textContent = "Grade: " + gradeLevel;
+    document.getElementById("resultTeacherLastName").textContent = "Teacher: " + teacherLastName;
+    const resultPeriod = document.getElementById("resultClassPeriod");
+    if (resultPeriod) resultPeriod.textContent = classPeriod ? "Period: " + classPeriod : "";
 
 
     document.getElementById(
@@ -2442,6 +2857,9 @@ function csvEscape(value) {
 
 function downloadCSV() {
 
+    // Display-friendly symbols for the downloadable report.
+    const operationDisplaySymbols = { "+": "+", "-": "−", "*": "×", "/": "÷" };
+
     const total =
         results.length;
 
@@ -2516,22 +2934,19 @@ function downloadCSV() {
 
     csv +=
         `Operations,${csvEscape(
-            getSelectedOperations().join(
+            getSelectedOperations().map(
+                operation => operationDisplaySymbols[operation] || operation
+            ).join(
                 ", "
             )
         )}\n`;
 
 
-    csv +=
-        `Number Range,${
-            document.getElementById(
-                "minNumber"
-            ).value
-        } to ${
-            document.getElementById(
-                "maxNumber"
-            ).value
-        }\n`;
+    csv += `Operation Number Ranges,${csvEscape(getSelectedOperations().map(operation => {
+        const names = { "+": "Addition", "-": "Subtraction", "*": "Multiplication", "/": "Division quotient" };
+        const range = getOperationRange(operation);
+        return `${names[operation]}: ${range.min} to ${range.max}`;
+    }).join("; "))}\n`;
 
 
     csv +=
@@ -2627,7 +3042,7 @@ function downloadCSV() {
 
                 `${resultText},` +
 
-                `${({"+":"+","-":"−","*":"×","/":"÷"}[result.operation] || result.operation)}\n`;
+                `${operationDisplaySymbols[result.operation] || result.operation}\n`;
 
         }
     );
@@ -2635,7 +3050,7 @@ function downloadCSV() {
 
     const blob =
         new Blob(
-            [csv],
+            ["\uFEFF", csv],
             {
                 type:
                     "text/csv;charset=utf-8;"
@@ -2696,6 +3111,9 @@ function downloadCSV() {
 
 function restartQuiz() {
 
+    stopMicrophoneMeter();
+    stopAutomaticSpeechRecognition();
+
     clearInterval(
         timerInterval
     );
@@ -2704,6 +3122,7 @@ function restartQuiz() {
     document.getElementById(
         "resultsScreen"
     ).classList.add("hidden");
+    document.getElementById("microphoneTestScreen").classList.add("hidden");
 
 
     document.getElementById(
@@ -2731,6 +3150,11 @@ function restartQuiz() {
 }
 
 
+// Initialize grade-dependent dropdowns without choosing a grade for the user.
+populateAssessmentDropdowns();
+applyGradeDefaults();
+updateAnswerMode();
+
 /* =========================================
    ENTER KEY
    ========================================= */
@@ -2752,9 +3176,10 @@ document.addEventListener(
             event.key === "Enter"
         ) {
 
-            event.preventDefault();
-
-            submitAnswer();
+            if (assessmentAnswerMethod === "type") {
+                event.preventDefault();
+                submitAnswer();
+            }
 
         }
 
