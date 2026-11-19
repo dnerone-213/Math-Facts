@@ -484,22 +484,28 @@
         <label for="gradeLevel">Grade</label>
         <select id="gradeLevel" onchange="applyGradeDefaults()" required>
             <option value="" selected disabled>Select Grade</option>
-            <option value="kindergarten">Kindergarten</option>
-            <option value="1st grade">1st Grade</option>
-            <option value="2nd grade">2nd Grade</option>
-            <option value="3rd grade">3rd Grade</option>
-            <option value="4th grade">4th Grade</option>
+            <option value="3rd grade (Option 1)">3rd Grade (1)</option>
+            <option value="3rd grade (Option 2)">3rd Grade (2)</option>
+            <option value="3rd grade (Option 3)">3rd Grade (3)</option>
+            <option value="4th grade (Option 1)">4th Grade (1)</option>
+            <option value="4th grade (Option 2)">4th Grade (2)</option>
             <option value="5th grade">5th Grade</option>
-            <option value="6th grade">6th Grade</option>
+            <option value="6th grade (Option 1)">6th Grade (1)</option>
+            <option value="6th grade (Option 2)">6th Grade (2)</option>
             <option value="7th grade">7th Grade</option>
-            <option value="8th grade">8th Grade</option>
+            <option value="8th grade (Option 1)">8th Grade (1)</option>
+            <option value="8th grade (Option 2)">8th Grade (2)</option>
+            <option value="8th grade (Option 3)">8th Grade (3)</option>
+            <option value="Middle school">Middle School</option>
             <option value="high school">High School</option>
+            <option value="high school2">High School (2)</option>
+
         </select>
 
         <label for="answerMode">Answer Method</label>
         <select id="answerMode" onchange="updateAnswerMode()">
             <option value="type" selected>Type Answers</option>
-<!--            <option value="speak">Speak Answers (Microphone)</option>           -->   
+        <option value="speak">Speak Answers (Microphone)</option>
         </select>
 
         <label for="teacherLastName">Teacher</label>
@@ -588,7 +594,8 @@
                 <select id="practiceTarget">
                     <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
                     <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7" selected>7</option>
-                    <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                    <option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+                    <option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
                 </select>
                 <p id="practiceTargetHelp" style="color:#666;margin-top:-8px;">Example: ×7 gives you the 7 multiplication facts.</p>
             </div>
@@ -994,64 +1001,92 @@ let assessmentAnswerMethod = "type";
    You can change these lists below if your schedule changes.
 */
 const TEACHERS_BY_GRADE = {
-    "kindergarten": [
-        "Test Kindergarten Teacher 1",
-        "Test Kindergarten Teacher 2"
+      "3rd grade (Option 1)": [
+        "Carden - 1",
+        "Shovlin - 1",
+        "Savnik - 1"
     ],
-    "1st grade": [
-        "Test 1st Grade Teacher 1",
-        "Test 1st Grade Teacher 2"
+      "3rd grade (Option 2)": [
+        "Carden - 2",
+        "Shovlin - 2",
+        "Savnik - 2"
     ],
-    "2nd grade": [
-        "Test 2nd Grade Teacher 1",
-        "Test 2nd Grade Teacher 2"
+     "3rd grade (Option 3)": [
+        "Carden - 3",
+        "Shovlin - 3",
+        "Savnik - 3"
     ],
-    "3rd grade": [
-        "Test 3rd Grade Teacher 1",
-        "Test 3rd Grade Teacher 2"
+    "4th grade (Option 1)": [
+        "Chifolo - 1",
+        "Suchora - 1",
+        "Jones - 1"
     ],
-    "4th grade": [
-        "Test 4th Grade Teacher 1",
-        "Test 4th Grade Teacher 2"
+    "4th grade (Option 2)": [
+        "Chifolo - 2",
+        "Suchora - 2",
+        "Jones - 2"
     ],
     "5th grade": [
-        "Test 5th Grade Teacher 1",
-        "Test 5th Grade Teacher 2"
+        "Johnson",
+        "Mathieson"
     ],
-    "6th grade": [
-        "Test 6th Grade Teacher 1",
-        "Test 6th Grade Teacher 2"
+    "6th grade (Option 1)": [
+        "Harris - 1",
+        "Smith - 1"
+    ],
+     "6th grade (Option 2)": [
+        "Harris - 2",
+        "Smith - 2"
     ],
     "7th grade": [
-        "Test 7th Grade Teacher 1",
-        "Test 7th Grade Teacher 2"
+        "Franceschelli",
+        "Markulin"
     ],
-    "8th grade": [
-        "Test 8th Grade Teacher 1",
-        "Test 8th Grade Teacher 2"
+    "8th grade (Option 1)": [
+        "Hoover-Tura - 1",
+        "Hilderbrand - 1"
+    ],
+    "8th grade (Option 2)": [
+        "Hoover-Tura - 2",
+        "Hilderbrand - 2"
+    ],
+    "8th grade (Option 3)": [
+        "Hoover-Tura - 3",
+        "Hilderbrand - 3"
+    ],
+    "Middle school": [
+        "Conner"
     ],
     "high school": [
-        "Mr. Garcar",
-        "Mr. Nerone",
-	"Mr. Barth",
-	"Mr. Silver",
-	"Miss Coppola",
-	"Ms. Edwards",
-	"Ms. Franklin"
+        "Garcar",
+        "Nerone",
+	"Barth",
+	"Silver",
+	"Coppola",
+	"Franklin"
+    ],
+    "high school2": [
+        "Edwards"
     ]
+
 };
 
 const PERIODS_BY_GRADE = {
-    "kindergarten": [],
-    "1st grade": [],
-    "2nd grade": [],
-    "3rd grade": [],
-    "4th grade": [],
+    "3rd grade (Option 1)": [],
+    "3rd grade (Option 2)": [],
+    "3rd grade (Option 3)": [],
+    "4th grade (Option 1)": [],
+    "4th grade (Option 2)": [],
     "5th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
-    "6th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "6th grade (Option 1)": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "6th grade (Option 2)": ["1", "2", "3", "4", "5", "6", "7", "8"],
     "7th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
-    "8th grade": ["1", "2", "3", "4", "5", "6", "7", "8"],
-    "high school": ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    "8th grade (Option 1)": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "8th grade (Option 2)": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "8th grade (Option 3)": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "Middle school": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    "high school": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    "high school2": ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 };
 
 function populateAssessmentDropdowns() {
@@ -1117,13 +1152,21 @@ const GRADE_DEFAULTS = {
     "kindergarten": { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition"] },
     "1st grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
     "2nd grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
-    "3rd grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
-    "4th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
-    "5th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
-    "6th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
-    "7th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
-    "8th grade":    { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
-    "high school":  { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] }
+    "3rd grade (Option 1)":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["addition"] },
+    "3rd grade (Option 2)":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["subtraction"] },
+    "3rd grade (Option 3)":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["multiplication"] },
+    "4th grade (Option 1)":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["multiplication", "division"] },
+    "4th grade (Option 2)":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
+    "5th grade":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "6th grade (Option 1)":    { questionCount: 40, secondsPerQuestion: 5, answerType: "positive", allowZero: true, operations: ["addition", "subtraction"] },
+    "6th grade (Option 2)":    { questionCount: 40, secondsPerQuestion: 5, answerType: "positive", allowZero: true, operations: ["multiplication", "division"] },
+    "7th grade":    { questionCount: 40, secondsPerQuestion: 6, answerType: "positive", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "8th grade (Option 1)":    { questionCount: 40, secondsPerQuestion: 5, answerType: "positive", allowZero: true, operations: ["multiplication"] },
+    "8th grade (Option 2)":    { questionCount: 40, secondsPerQuestion: 5, answerType: "both", allowZero: true, operations: ["multiplication"] },
+    "8th grade (Option 3)":    { questionCount: 40, secondsPerQuestion: 5, answerType: "both", allowZero: true, operations: ["addition", "subtraction"] },
+    "Middle school":    { questionCount: 40, secondsPerQuestion: 15, answerType: "positive", allowZero: true, operations: ["multiplication"] },
+    "high school":  { questionCount: 40, secondsPerQuestion: 4, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] },
+    "high school2":  { questionCount: 40, secondsPerQuestion: 8, answerType: "both", allowZero: true, operations: ["addition", "subtraction", "multiplication", "division"] }
 };
 
 /* ============================================================
@@ -1161,43 +1204,91 @@ const GRADE_OPERATION_RANGES = {
         "*": { min: 0, max: 10 },
         "/": { min: 0, max: 12 }
     },
-    "3rd grade": {
+    "3rd grade (Option 1)": {
         "+": { min: 0, max: 20 },
         "-": { min: 0, max: 20 },
         "*": { min: 0, max: 5 },
         "/": { min: 0, max: 12 }
     },
-    "4th grade": {
+    "3rd grade (Option 2)": {
+        "+": { min: 0, max: 20 },
+        "-": { min: 0, max: 20 },
+        "*": { min: 0, max: 5 },
+        "/": { min: 0, max: 12 }
+    },
+    "3rd grade (Option 3)": {
+        "+": { min: 0, max: 20 },
+        "-": { min: 0, max: 20 },
+        "*": { min: 0, max: 12 },
+        "/": { min: 0, max: 12 }
+    },
+    "4th grade (Option 1)": {
         "+": { min: -12, max: 12 },
         "-": { min: -12, max: 12 },
         "*": { min: 0, max: 12 },
         "/": { min: 0, max: 12 }
     },
+    "4th grade (Option 2)": {
+        "+": { min: 0, max: 20 },
+        "-": { min: 0, max: 20 },
+        "*": { min: 0, max: 12 },
+        "/": { min: 0, max: 12 }
+    },
     "5th grade": {
-        "+": { min: -20, max: 20 },
-        "-": { min: -20, max: 20 },
+        "+": { min: 0, max: 12 },
+        "-": { min: 0, max: 12 },
+        "*": { min: 0, max: 12 },
+        "/": { min: 0, max: 12 }
+    },
+    "6th grade (Option 1)": {
+        "+": { min: 0, max: 12 },
+        "-": { min: 0, max: 12 },
         "*": { min: -12, max: 12 },
         "/": { min: -12, max: 12 }
     },
-    "6th grade": {
+    "6th grade (Option 2)": {
         "+": { min: -12, max: 12 },
         "-": { min: -12, max: 12 },
-        "*": { min: -12, max: 12 },
-        "/": { min: -12, max: 12 }
+        "*": { min: 0, max: 12 },
+        "/": { min: 0, max: 12 }
     },
     "7th grade": {
+        "+": { min: 0, max: 12 },
+        "-": { min: 0, max: 12 },
+        "*": { min: 0, max: 12 },
+        "/": { min: 0, max: 12 }
+    },
+    "8th grade (Option 1)": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: 0, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "8th grade (Option 2)": {
         "+": { min: -12, max: 12 },
         "-": { min: -12, max: 12 },
         "*": { min: -12, max: 12 },
         "/": { min: -12, max: 12 }
     },
-    "8th grade": {
+    "8th grade (Option 3)": {
         "+": { min: -12, max: 12 },
         "-": { min: -12, max: 12 },
         "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "Middle school": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: 0, max: 12 },
         "/": { min: -12, max: 12 }
     },
     "high school": {
+        "+": { min: -12, max: 12 },
+        "-": { min: -12, max: 12 },
+        "*": { min: -12, max: 12 },
+        "/": { min: -12, max: 12 }
+    },
+    "high school2": {
         "+": { min: -12, max: 12 },
         "-": { min: -12, max: 12 },
         "*": { min: -12, max: 12 },
@@ -1584,7 +1675,7 @@ function buildPracticeDeck() {
     if (operation === "mixed") {
         const ops = ["+", "-", "*"];
         for (const op of ops) {
-            for (let n = 0; n <= 12; n++) {
+            for (let n = 0; n <= 20; n++) {
                 cards.push(makePracticeCard(op, n, target));
             }
         }
@@ -1595,7 +1686,7 @@ function buildPracticeDeck() {
             }
         }
     } else {
-        for (let n = 0; n <= 12; n++) {
+        for (let n = 0; n <= 20; n++) {
             if (operation === "/") {
                 // Classic division family: 0÷target through 12×target÷target.
                 if (target === 0) continue;
